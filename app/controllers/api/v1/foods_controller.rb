@@ -15,7 +15,16 @@ class Api::V1::FoodsController < ApplicationController
   def create
     food = Food.new(name: params[:name], calories: params[:calories])
     if food.save
-      render json: food
+      render json: food, serializer: NewFoodSerializer
+    else
+      render status: 400
+    end
+  end
+
+  def update
+    food = Food.find(params[:id])
+    if food.update(name: params[:name], calories: params[:calories])
+      render json: food, serializer: NewFoodSerializer
     else
       render status: 400
     end
