@@ -29,4 +29,14 @@ class Api::V1::FoodsController < ApplicationController
       render status: 400
     end
   end
+
+  def destroy
+    begin
+      food = Food.find(params[:id])
+      food.destroy
+      render status: 204
+    rescue
+      render status: 400
+    end
+  end
 end
