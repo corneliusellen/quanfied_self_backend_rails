@@ -11,12 +11,12 @@ class Api::V1::FoodsController < ApplicationController
   end
 
   def create
-    food = Food.create(name: params[:name], calories: params[:calories])
+    food = Food.create(name: params[:food][:name], calories: params[:food][:calories])
     render json: food, serializer: NewFoodSerializer
   end
 
   def update
-    find_food.update(name: params[:name], calories: params[:calories])
+    find_food.update(name: params[:food][:name], calories: params[:food][:calories])
     render json: find_food, serializer: NewFoodSerializer
   end
 
@@ -32,7 +32,7 @@ class Api::V1::FoodsController < ApplicationController
   end
 
   def validate_params
-    unless params.permit(:name && :calories).present?
+    unless params.require(:food).permit(:name && :calories).present?
       render status: 400
     end
   end
