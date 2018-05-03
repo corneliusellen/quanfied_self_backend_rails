@@ -5,3 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+FoodMeal.all.destroy_all
+Food.all.destroy_all
+Meal.all.destroy_all
+
+ActiveRecord::Base.connection.reset_pk_sequence!(:meals)
+
+meals = ["Breakfast", "Snacks", "Lunch", "Dinner"]
+meals.each do |meal|
+  Meal.create!(name: meal)
+  puts "Created #{meal}"
+end
