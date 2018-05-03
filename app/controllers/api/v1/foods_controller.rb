@@ -1,41 +1,38 @@
 class Api::V1::FoodsController < ApplicationController
+  before_action :find_food, only: [:show, :update, :destroy]
+  before_action :validate_params, only: [:create, :update]
 
   def index
     render json: Food.all
   end
 
   def show
-    begin
-      render json: Food.find(params[:id])
-    rescue
-      render status: 404
-    end
+      render json: find_food
   end
 
   def create
-    food = Food.new(name: params[:name], calories: params[:calories])
-    if food.save
-      render json: food, serializer: NewFoodSerializer
-    else
-      render status: 400
-    end
+    food = Food.create(name: params[:name], calories: params[:calories])
+    render json: food, serializer: NewFoodSerializer
   end
 
   def update
-    food = Food.find(params[:id])
-    if food.update(name: params[:name], calories: params[:calories])
-      render json: food, serializer: NewFoodSerializer
-    else
-      render status: 400
-    end
+    find_food.update(name: params[:name], calories: params[:calories])
+    render json: find_food, serializer: NewFoodSerializer
   end
 
   def destroy
-    begin
-      food = Food.find(params[:id])
-      food.destroy
-      render status: 204
-    rescue
+    find_food.destroy
+    render status: 204
+  end
+
+  private
+
+  def find_food
+    food ||= Food.find(params[:id])
+  end
+
+  def validate_params
+    unless params.permit(:name && :calories).present?
       render status: 400
     end
   end

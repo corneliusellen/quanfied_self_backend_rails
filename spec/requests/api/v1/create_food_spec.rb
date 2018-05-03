@@ -13,7 +13,7 @@ describe 'Food API' do
   end
 
   it "returns 400 if food is not saved" do
-    params = {name: 'ice cream'}
+    params = {name: 'escargot'}
     post '/api/v1/foods', params: params
 
     expect(response.status).to eq(400)

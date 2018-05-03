@@ -14,6 +14,6 @@ describe 'Food API' do
   it "raises 404 if food not found" do
     delete "/api/v1/foods/12345"
 
-    expect(response.status).to eq(400)
+    expect(response.status).to eq(404)
   end
 end
