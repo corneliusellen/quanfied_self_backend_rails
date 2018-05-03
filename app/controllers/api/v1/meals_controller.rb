@@ -20,9 +20,20 @@ class Api::V1::MealsController < ApplicationController
       render json: {message: "Successfully added #{food.name} to #{meal.name}"}
     rescue
       render status: 404
-    end 
+    end
   end
 
   def destroy
+    begin
+      food = params[:food_id]
+      meal = params[:meal_id]
+      food_name = Food.find(food).name
+      meal_name = Meal.find(meal).name
+      foodmeal = FoodMeal.find_by(meal_id: meal, food_id: food)
+      foodmeal.destroy
+      render json: {message: "Successfully removed #{food_name} from #{meal_name}"}
+    rescue
+      render status: 404
+    end
   end
 end
