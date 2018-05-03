@@ -17,4 +17,10 @@ describe "Meals API" do
     expect(result["foods"][0]["name"]).to eq(fruit.name)
     expect(result["foods"][0]["calories"]).to eq(fruit.calories)
   end
+
+  it "send 404 if meal is not found" do
+    get "/api/v1/meals/12345/foods"
+
+    expect(response.status).to eq(404)
+  end
 end

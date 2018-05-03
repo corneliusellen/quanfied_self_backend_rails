@@ -5,7 +5,11 @@ class Api::V1::MealsController < ApplicationController
   end
 
   def show
-    render json: Meal.find(params[:meal_id])
+    begin
+      render json: Meal.find(params[:meal_id])
+    rescue
+      render status: 404
+    end
   end
 
   def create
